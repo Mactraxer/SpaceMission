@@ -8,15 +8,16 @@ public class RocketMovement : MonoBehaviour
     [SerializeField]
     private Rigidbody _rocket;
 
-    private float force = 0.5f;
+    [SerializeField]
+    private float _engineForce = 0.5f;
 
     public void StartLeftEngine()
     {
-        _rocket.AddTorque(Vector3.back * force, ForceMode.Impulse);
+        _rocket.AddTorque(Vector3.back * _engineForce, ForceMode.Impulse);
     }
 
     public void StartRightEngine()
     {
-        _rocket.AddTorque(Vector3.forward * force, ForceMode.Impulse);
+        _rocket.AddTorque(Vector3.forward * _engineForce, ForceMode.Impulse);
     }
 }
