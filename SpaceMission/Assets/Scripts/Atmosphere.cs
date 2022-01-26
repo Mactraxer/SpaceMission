@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Atmosphere : MonoBehaviour
 {
     [SerializeField] float _gravityForce;
-    private Rigidbody _target;
-    private float _gravityMulticator;
-
-    void OnTriggerEnter(Collider other)
+    private Rigidbody2D _target;
+    
+    void OnTriggerEnter2D(Collider2D other)
     {
-        var rigidBody = other.gameObject.GetComponent<Rigidbody>();
+        var rigidBody = other.gameObject.GetComponent<Rigidbody2D>();
         if (rigidBody != null)
         {
             _target = rigidBody;
@@ -18,10 +15,10 @@ public class Atmosphere : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit2D(Collider2D other)
     {
         
-        var rigidBody = other.gameObject.GetComponent<Rigidbody>();
+        var rigidBody = other.gameObject.GetComponent<Rigidbody2D>();
         if (rigidBody != null)
         {
             _target = null;
@@ -32,8 +29,8 @@ public class Atmosphere : MonoBehaviour
     {
         if (_target != null)
         {
-            
-            _target.AddForceAtPosition((gameObject.transform.position - _target.position) * _gravityForce, gameObject.transform.position, ForceMode.Force);
+            var atmosphereCentr = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            _target.AddForceAtPosition((atmosphereCentr - _target.position) * _gravityForce, gameObject.transform.position, ForceMode2D.Force);
         }
         
     }
