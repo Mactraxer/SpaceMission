@@ -5,7 +5,7 @@ using System.Collections;
 public class LaunchRocket : MonoBehaviour
 {
     [SerializeField]
-    private Rigidbody Rocket;
+    private Rigidbody2D Rocket;
 
     [SerializeField]
     private Text _fuelInput;
@@ -35,7 +35,7 @@ public class LaunchRocket : MonoBehaviour
             _fuel--;
             Debug.Log("Fuel burn");
             ApplyEngineForce();
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.2f);
         }
         
     }
@@ -43,6 +43,6 @@ public class LaunchRocket : MonoBehaviour
     private void ApplyEngineForce()
     {
         Debug.Log("Engine forced");
-        Rocket.AddRelativeForce(Vector3.up * _engineForce, ForceMode.Force);
+        Rocket.AddRelativeForce(Vector2.up * _engineForce, ForceMode2D.Force);
     }
 }

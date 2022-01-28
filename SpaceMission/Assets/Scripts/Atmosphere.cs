@@ -2,9 +2,19 @@ using UnityEngine;
 
 public class Atmosphere : MonoBehaviour
 {
-    [SerializeField] float _gravityForce;
+    [SerializeField] 
+    private float _gravityForce;
+    [SerializeField]
+    private float _planetMass;
+    [SerializeField]
+    private Transform _planetTransform;
+
+    [SerializeField]
+    private  float GravityConst = 0.00667f;
+
     private Rigidbody2D _target;
-    
+
+
     void OnTriggerEnter2D(Collider2D other)
     {
         var rigidBody = other.gameObject.GetComponent<Rigidbody2D>();
@@ -29,10 +39,17 @@ public class Atmosphere : MonoBehaviour
     {
         if (_target != null)
         {
-            var atmosphereCentr = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-            _target.AddForceAtPosition((atmosphereCentr - _target.position) * _gravityForce, gameObject.transform.position, ForceMode2D.Force);
+            var distanseVector = _planetTransform.position - _target.transform.position;
+            var distanse = distanseVector.magnitude;
+            
+            var appliedForce = GravityConst * (_target.mass * _planetMass / (distanse * distanse));
+                       
+            _target.AddForceAtPosition(distanseVector.normalized * appliedForce, _target.transform.position, ForceMode2D.Force);
+            
         }
         
     }
+
+    
 
 }
