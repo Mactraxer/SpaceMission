@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class RocketMovement : MonoBehaviour
+public class RocketManualMovement : MonoBehaviour
 {
 
     [SerializeField]
@@ -116,6 +116,7 @@ public class RocketMovement : MonoBehaviour
 
     private IEnumerator Speedometr()
     {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
         while (true)
         {
             _speed = Vector3.Distance(previousPosition, _rocket.transform.position) / Time.deltaTime;
@@ -123,57 +124,63 @@ public class RocketMovement : MonoBehaviour
             _speed = Mathf.Round(_speed);
             UpdateSpeedText();
             previousPosition = gameObject.transform.position;
-            yield return new WaitForFixedUpdate();
+            yield return waitForFixedUpdate;
         }
     }
 
     private IEnumerator AddForceLeftEngine()
     {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
         _leftEngineParticle.Play();
         while (true)
         {
             _torqueAccumulativeForce += _torqueEngineForce;
             _rocket.AddTorque(-1 * _torqueAccumulativeForce, ForceMode2D.Force);
-            yield return new WaitForFixedUpdate();
+            
+            yield return waitForFixedUpdate;
             BurnFuel();
         }
     }
 
     private IEnumerator AddForceRightEngine()
     {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
         _rightEngineParticle.Play();
         while (true)
         {
             _torqueAccumulativeForce += _torqueEngineForce;
             _rocket.AddTorque(1 * _torqueAccumulativeForce, ForceMode2D.Force);
-            yield return new WaitForFixedUpdate();
+            
+            yield return waitForFixedUpdate;
             BurnFuel();
         }
     }
 
     private IEnumerator AddForceFrontEngine()
     {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
         _topEngineParticle.Play();
         while (true)
         {
             _engineAccumulativeForce += _engineForce;
             _rocket.AddRelativeForce(Vector2.down * _engineAccumulativeForce, ForceMode2D.Force);
-            yield return new WaitForFixedUpdate();
+            
+            yield return waitForFixedUpdate;
             BurnFuel();
         }
     }
 
     private IEnumerator AddForceBackEngine()
     {
+        var waitForFixedUpdate = new WaitForFixedUpdate();
         _backEnginePartricle.Play();
         while (true)
         {
             _engineAccumulativeForce += _engineForce;
             _rocket.AddRelativeForce(Vector2.up * _engineAccumulativeForce, ForceMode2D.Force);
-            yield return new WaitForFixedUpdate();
+            yield return waitForFixedUpdate;
             BurnFuel();
         }
-        
     }
 
     private void BurnFuel()
